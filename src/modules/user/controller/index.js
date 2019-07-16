@@ -51,6 +51,47 @@ userController.update = async ({ id, email, password, firstName, lastName }) => 
   }
 }
 
+userController.delete = async ({ id }) => {
+  try {
+    transaction = await db.sequelize.transaction()
+    const userFetch = await User.findOne({
+      where: {
+        id: id
+      }
+    }, {
+      transaction
+    })
+
+    if (!userFetch) throw new Error('Not found')
+
+    await userFetch.destroy({ id }, { transaction })
+
+    await transaction.commit()
+  } catch (err) {
+    logger.info(err)
+    await transaction.rollback()
+  }
+}
+
+userController.find = async ({ id }) => {
+  try {
+    const userFetch = await User.findOne({
+      where: {
+        id: id
+      },
+      attributes: {
+        exclude: ['password']
+      }
+    })
+
+    if (!userFetch) throw new Error('Not found')
+
+    return userFetch
+  } catch (err) {
+    logger.info(err)
+  }
+}
+
 module.exports = {
   userController
 }

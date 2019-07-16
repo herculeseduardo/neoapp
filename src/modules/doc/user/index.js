@@ -133,3 +133,53 @@
  *       401:
  *         description: Unauthorized
  */
+
+/**
+ * @swagger
+ * /api/user/{userId}:
+ *   delete:
+ *     description: Delete user
+ *     tags:
+ *       - users
+ *     consumes:
+ *       - application/json
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         description: id
+ *         required: true
+ *     responses:
+ *       204:
+ *         description: No content
+ *       400:
+ *         description: Bad Request
+ *       401:
+ *         description: Unauthorized
+ */
+
+/**
+ * @swagger
+ * /api/user/{userId}:
+ *   get:
+ *     description: Find user
+ *     tags:
+ *       - users
+ *     consumes:
+ *       - application/json
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         description: id
+ *         required: true
+ *     responses:
+ *       204:
+ *         description: No content
+ *       400:
+ *         description: Bad Request
+ *       401:
+ *         description: Unauthorized
+ */

@@ -49,6 +49,32 @@ userHandler.updateUser = async (req, res, next) => {
   }
 }
 
+userHandler.deleteUser = async (req, res, next) => {
+  logger.info('Delete User')
+  try {
+    res
+      .status(HTTPStatus.OK)
+      .json(await userController.delete({
+        id: req.params.userId
+      }))
+  } catch (err) {
+    return next(err)
+  }
+}
+
+userHandler.findUser = async (req, res, next) => {
+  logger.info('Find User')
+  try {
+    res
+      .status(HTTPStatus.OK)
+      .json(await userController.find({
+        id: req.params.userId
+      }))
+  } catch (err) {
+    return next(err)
+  }
+}
+
 module.exports = {
   ...userHandler
 }

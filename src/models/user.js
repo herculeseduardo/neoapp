@@ -25,7 +25,9 @@ module.exports = (sequelize, DataTypes) => {
         len: [0, 50]
       }
     }
-  }, {})
+  }, {
+    paranoid: true
+  })
   User.beforeCreate((user, options) => {
     return bcrypt.hash(user.password, 10)
       .then(hash => {

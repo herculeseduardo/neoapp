@@ -1,14 +1,18 @@
 const express = require('express')
 const router = express.Router()
 
-// const validateJWT = require('helpers/jwt')
+const validateJWT = require('helpers/middlewares/jwt')
 
-const { listUsers, createUser, updateUser } = require('../handler')
+const { listUsers, createUser, updateUser, deleteUser, findUser } = require('../handler')
 
-router.get('/', listUsers)
+router.get('/', validateJWT, listUsers)
 
-router.post('/', createUser)
+router.get('/:userId', validateJWT, findUser)
 
-router.put('/:userId', updateUser)
+router.post('/', validateJWT, createUser)
+
+router.put('/:userId', validateJWT, updateUser)
+
+router.delete('/:userId', validateJWT, deleteUser)
 
 module.exports = router

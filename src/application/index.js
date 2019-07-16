@@ -24,7 +24,8 @@ app.use(bodyParser.text())
 app.use(cookieParser())
 
 app.use('/api/user', require('modules/user/api'))
-app.use('/api/login', require('modules/auth/api'))
+app.use('/api/register', require('modules/auth/api/register'))
+app.use('/api/login', require('modules/auth/api/login'))
 
 const swagger = require('helpers/swagger')({
   apis: [
