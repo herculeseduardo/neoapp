@@ -3,7 +3,7 @@ const logger = require('helpers/logger')({ context: 'USER' })
 
 const { userController } = require('../controller')
 
-let userHandler = {}
+const userHandler = {}
 
 userHandler.listUsers = async (req, res, next) => {
   logger.info('List Users')
@@ -67,7 +67,7 @@ userHandler.findUser = async (req, res, next) => {
   try {
     res
       .status(HTTPStatus.OK)
-      .json(await userController.find({
+      .json(await userController.findById({
         id: req.params.userId
       }))
   } catch (err) {

@@ -1,32 +1,29 @@
-class CustomError extends Error {
-  constructor () {
-    super()
-    this.errors = []
-  }
-
-  addError (code, message, path) {
-    this.code = this.code || code
-    this.message = this.message || message
-    this.errors.push({
-      code, message: message || code, path
-    })
+const HTTPStatus = require('http-status')
+class AppError extends Error {
+  constructor (message) {
+    super(message)
+    this.name = this.constructor.name
+    Error.captureStackTrace(this, this.constructor)
   }
 }
 
-const errors = {
-  ERR_NOT_FOUND: 'ERR_NOT_FOUND',
-
-  getErrorInstance () {
-    return new CustomError()
-  },
-
-  buildError (code, message, options) {
-    options = options || { }
-    let error = errors.getErrorInstance()
-    error.addError(code, message)
-    console.error(`ERROR: ${code} ${message}`)
-    return error
+class ResourceNotFoundError extends AppError {
+  constructor (resource, query) {
+    super(`Resource ${resource} was not found.`)
+    this.data = { resource, query }
+    this.status = HTTPStatus.NOT_FOUND
+    this.code = 'NOT_FOUND'
   }
 }
 
-module.exports = errors
+class InternalError extends AppError {
+  constructor (error) {
+    super(error.message)
+    this.data = { error }
+  }
+}
+
+module.exports = {
+  ResourceNotFoundError,
+  InternalError
+}

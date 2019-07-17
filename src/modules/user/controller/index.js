@@ -1,8 +1,9 @@
 const { User } = require('models')
 const db = require('models')
 const logger = require('helpers/logger')({ context: 'Controller' })
+const { ResourceNotFoundError } = require('helpers/errors')
 
-let userController = {}
+const userController = {}
 
 let transaction
 
@@ -14,7 +15,8 @@ userController.create = async ({ email, password, firstName, lastName }) => {
     await transaction.commit()
   } catch (err) {
     logger.info(err)
-    if (err) await transaction.rollback()
+    await transaction.rollback()
+    throw err
   }
 }
 
@@ -48,6 +50,7 @@ userController.update = async ({ id, email, password, firstName, lastName }) => 
   } catch (err) {
     logger.info(err)
     await transaction.rollback()
+    throw err
   }
 }
 
@@ -70,26 +73,23 @@ userController.delete = async ({ id }) => {
   } catch (err) {
     logger.info(err)
     await transaction.rollback()
+    throw err
   }
 }
 
-userController.find = async ({ id }) => {
-  try {
-    const userFetch = await User.findOne({
-      where: {
-        id: id
-      },
-      attributes: {
-        exclude: ['password']
-      }
-    })
+userController.findById = async ({ id }) => {
+  const userFetch = await User.findOne({
+    where: {
+      id: id
+    },
+    attributes: {
+      exclude: ['password']
+    }
+  })
 
-    if (!userFetch) throw new Error('Not found')
+  if (!userFetch) throw new ResourceNotFoundError(`user with id ${id}`, 'hhhh')
 
-    return userFetch
-  } catch (err) {
-    logger.info(err)
-  }
+  return userFetch
 }
 
 module.exports = {
