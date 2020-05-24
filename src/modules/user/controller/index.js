@@ -20,8 +20,10 @@ userController.create = async ({ email, password, firstName, lastName }) => {
   }
 }
 
-userController.list = async () => {
+userController.list = async ({ limit = 10, offset = 0 }) => {
   const users = await User.findAll({
+    offset,
+    limit,
     attributes: {
       exclude: ['password']
     }
@@ -29,22 +31,37 @@ userController.list = async () => {
   return users
 }
 
-userController.update = async ({ id, email, password, firstName, lastName }) => {
+userController.update = async ({
+  id,
+  email,
+  password,
+  firstName,
+  lastName
+}) => {
   try {
     transaction = await db.sequelize.transaction()
-    const userFetch = await User.findOne({
-      where: {
-        id: id
+    const userFetch = await User.findOne(
+      {
+        where: {
+          id: id
+        }
+      },
+      {
+        transaction
       }
-    }, {
-      transaction
-    })
+    )
 
     if (!userFetch) throw new Error('Not found')
 
-    await userFetch.update({
-      email, password, firstName, lastName
-    }, { transaction })
+    await userFetch.update(
+      {
+        email,
+        password,
+        firstName,
+        lastName
+      },
+      { transaction }
+    )
 
     await transaction.commit()
   } catch (err) {
@@ -57,13 +74,16 @@ userController.update = async ({ id, email, password, firstName, lastName }) => 
 userController.delete = async ({ id }) => {
   try {
     transaction = await db.sequelize.transaction()
-    const userFetch = await User.findOne({
-      where: {
-        id: id
+    const userFetch = await User.findOne(
+      {
+        where: {
+          id: id
+        }
+      },
+      {
+        transaction
       }
-    }, {
-      transaction
-    })
+    )
 
     if (!userFetch) throw new Error('Not found')
 

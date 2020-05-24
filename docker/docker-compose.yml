@@ -1,0 +1,48 @@
+version: "3"
+services:
+  postgres:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: neoapp
+
+  migrate:
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    depends_on:
+      - postgres
+    env_file:
+      - ../.env
+    environment:
+      SEQUELIZE: migrate
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_NAME: neoapp
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      WAIT_FOR_HOSTS: "postgres:5432"
+
+  api:
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    restart: always
+    ports:
+      - 3000:3000
+      - 9000:9000
+    env_file:
+      - ../.env
+    environment:
+      PORT: 3000
+      DEBUG_PORT: 9000
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_NAME: neoapp
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      WAIT_FOR_HOSTS: "postgres:5432"

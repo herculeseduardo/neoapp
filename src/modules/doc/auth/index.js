@@ -70,10 +70,10 @@
  */
 
 /**
-* @swagger
-* definitions:
-*   auth:
-*     properties:
-*       jwt:
-*         type: string
-*/
+ * @swagger
+ * definitions:
+ *   auth:
+ *     properties:
+ *       jwt:
+ *         type: string
+ */

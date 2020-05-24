@@ -1,27 +1,27 @@
 /**
-* @swagger
-* definitions:
-*   User:
-*     type: object
-*     required:
-*       - id
-*       - name
-*       - email
-*       - lastUpdate
-*     properties:
-*       id:
-*         type: number
-*       name:
-*         type: string
-*       email:
-*         type: string
-*       lastUpdate:
-*         type: number
-*   Users:
-*     type: array
-*     items:
-*       $ref: '#/definitions/User'
-*/
+ * @swagger
+ * definitions:
+ *   User:
+ *     type: object
+ *     required:
+ *       - id
+ *       - name
+ *       - email
+ *       - lastUpdate
+ *     properties:
+ *       id:
+ *         type: number
+ *       name:
+ *         type: string
+ *       email:
+ *         type: string
+ *       lastUpdate:
+ *         type: number
+ *   Users:
+ *     type: array
+ *     items:
+ *       $ref: '#/definitions/User'
+ */
 
 /**
  * @swagger

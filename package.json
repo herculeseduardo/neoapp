@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "NODE_PATH=$(pwd)/src nodemon ./src/server.js"
+    "start": "NODE_PATH=$(pwd)/src nodemon ./src/server.js",
+    "db:migrate": "node_modules/.bin/sequelize db:migrate",
+    "debug": "NODE_PATH=$(pwd)/src node --inspect=0.0.0.0:$DEBUG_PORT ./src/server.js"
   },
   "keywords": [],
   "author": "",

@@ -18,9 +18,7 @@ module.exports = ({ apis }) => {
           in: 'header'
         }
       },
-      security: [
-        { jwt: [] }
-      ],
+      security: [{ jwt: [] }],
       basePath: '/'
     },
     apis

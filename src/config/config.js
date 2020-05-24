@@ -19,7 +19,6 @@ module.exports = {
     host: process.env.DATABASE_HOST || 'localhost',
     port: process.env.DATABASE_PORT || 5432,
     dialect: 'postgres',
-    operatorsAliases: false,
     pool: {
       max: process.env.DATABASE_POOL_MAX || 5,
       idle: process.env.DATABASE_POOL_IDLE || 10000,

@@ -5,6 +5,6 @@ request(app)
   .set('Authorization', 'Basic [YOUR CREDENTIALS HERE]')
   .expect(200)
   .end((err, res) => {
-    console.log(res.result);
+    console.log(res.result)
     // Your assertions here...
   })

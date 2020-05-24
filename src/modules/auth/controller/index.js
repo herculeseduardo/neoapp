@@ -5,18 +5,21 @@ const jwt = require('utils/jwt')
 const bcrypt = require('bcrypt')
 const errors = require('helpers/errors')
 
-let authController = {}
+const authController = {}
 
 let transaction
 
 authController.register = async ({ email, password, firstName, lastName }) => {
   try {
-    // await db.sequelize.sync({ force: true })
+    //await db.sequelize.sync({ force: true })
     transaction = await db.sequelize.transaction()
 
-    let user = await User.create({ email, password, firstName, lastName }, { transaction })
+    const user = await User.create(
+      { email, password, firstName, lastName },
+      { transaction }
+    )
 
-    let token = jwt.sign({ id: user.id, role: user.role })
+    const token = jwt.sign({ id: user.id })
 
     await transaction.commit()
 
@@ -24,27 +27,24 @@ authController.register = async ({ email, password, firstName, lastName }) => {
   } catch (err) {
     logger.info(err)
     await transaction.rollback()
+    throw err
   }
 }
 
 authController.login = async ({ email, password }) => {
-  try {
-    const user = await User.findOne({
-      where: {
-        email
-      }
-    })
-    if (!user) throw errors.buildError('ERR_LOGIN_FAILURE')
-
-    if (!bcrypt.compareSync(password || '', user.password)) {
-      throw errors.buildError('ERR_LOGIN_FAILURE')
+  const user = await User.findOne({
+    where: {
+      email
     }
-    let token = jwt.sign({ id: user.id, role: user.role })
+  })
+  if (!user) throw errors.buildError('ERR_LOGIN_FAILURE')
 
-    return { jwt: token }
-  } catch (err) {
-    throw err
+  if (!bcrypt.compareSync(password || '', user.password)) {
+    throw errors.buildError('ERR_LOGIN_FAILURE')
   }
+  const token = jwt.sign({ id: user.id })
+
+  return { jwt: token }
 }
 
 module.exports = {

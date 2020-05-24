@@ -3,7 +3,13 @@ const router = express.Router()
 
 const validateJWT = require('helpers/middlewares/jwt')
 
-const { listUsers, createUser, updateUser, deleteUser, findUser } = require('../handler')
+const {
+  listUsers,
+  createUser,
+  updateUser,
+  deleteUser,
+  findUser
+} = require('../handler')
 
 router.get('/', validateJWT, listUsers)
 
